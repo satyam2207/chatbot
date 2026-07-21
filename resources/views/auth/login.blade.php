@@ -1,20 +1,30 @@
 <x-guest-layout>
+
+    <div class="text-center mb-6">
+        <h1 class="text-3xl font-bold text-blue-600">
+            College Chatbot
+        </h1>
+
+        <p class="text-gray-500 mt-2">
+            AI Assistant for Students
+        </p>
+    </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}">
-        @csrf
+        @csrf`
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('College Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Account Password')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -40,7 +50,7 @@
             @endif
 
             <x-primary-button class="ms-3">
-                {{ __('Log in') }}
+                {{ __('Login to College Chatbot') }}
             </x-primary-button>
         </div>
     </form>
