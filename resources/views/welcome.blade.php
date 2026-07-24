@@ -188,6 +188,178 @@
     </div>
 
 </section>
+<!-- Features Section -->
+
+<section class="py-20 bg-gray-50">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="text-center mb-14">
+
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                How KDP Connect Helps You
+            </h2>
+
+            <p class="text-gray-600 max-w-3xl mx-auto">
+                KDP Connect is your AI-powered college assistant. Simply ask a
+                question and receive instant answers about admissions,
+                academics, departments, notices and campus services.
+            </p>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Card 1 -->
+
+            <div class="bg-white rounded-xl shadow-md p-8 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                <div class="text-5xl mb-5">
+                    🎓
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Ask About Admissions
+                </h3>
+
+                <p class="text-gray-600 mb-6">
+                    Get instant answers about eligibility,
+                    ACPDC admission process,
+                    required documents and important dates.
+                </p>
+
+                <button class="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Ask AI
+                </button>
+
+            </div>
+
+            <!-- Card 2 -->
+
+            <div class="bg-white rounded-xl shadow-md p-8 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                <div class="text-5xl mb-5">
+                    📚
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Ask About Courses
+                </h3>
+
+                <p class="text-gray-600 mb-6">
+                    Learn about diploma programs,
+                    subjects, curriculum,
+                    departments and academic information.
+                </p>
+
+                <button class="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Ask AI
+                </button>
+
+            </div>
+
+            <!-- Card 3 -->
+
+            <div class="bg-white rounded-xl shadow-md p-8 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                <div class="text-5xl mb-5">
+                    📢
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Ask About Notices
+                </h3>
+
+                <p class="text-gray-600 mb-6">
+                    Find examination schedules,
+                    announcements,
+                    holidays and important updates instantly.
+                </p>
+
+                <button class="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Ask AI
+                </button>
+
+            </div>
+
+            <!-- Card 4 -->
+
+            <div class="bg-white rounded-xl shadow-md p-8 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                <div class="text-5xl mb-5">
+                    🏫
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Explore Campus
+                </h3>
+
+                <p class="text-gray-600 mb-6">
+                    Ask about laboratories,
+                    library, classrooms,
+                    facilities and student services.
+                </p>
+
+                <button class="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Ask AI
+                </button>
+
+            </div>
+
+            <!-- Card 5 -->
+
+            <div class="bg-white rounded-xl shadow-md p-8 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                <div class="text-5xl mb-5">
+                    💬
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Student Support
+                </h3>
+
+                <p class="text-gray-600 mb-6">
+                    Receive quick answers to
+                    frequently asked questions
+                    anytime without waiting.
+                </p>
+
+                <button class="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Start Chat
+                </button>
+
+            </div>
+
+            <!-- Card 6 -->
+
+            <div class="bg-white rounded-xl shadow-md p-8 hover:shadow-2xl hover:-translate-y-2 transition duration-300">
+
+                <div class="text-5xl mb-5">
+                    🤖
+                </div>
+
+                <h3 class="text-xl font-bold mb-3">
+                    Smart AI Assistant
+                </h3>
+
+                <p class="text-gray-600 mb-6">
+                    Powered by AI to understand
+                    your questions and provide
+                    fast, accurate responses.
+                </p>
+
+                <button class="bg-blue-700 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Try Now
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 <!-- Contact Section -->
 
 <section class="py-20 bg-gray-100">
