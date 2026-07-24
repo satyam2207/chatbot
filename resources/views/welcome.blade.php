@@ -188,6 +188,104 @@
     </div>
 
 </section>
+<!-- Contact Section -->
+
+<section class="py-20 bg-gray-100">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="text-center mb-14">
+
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                Contact Us
+            </h2>
+
+            <p class="text-gray-600">
+                Reach out to us for admissions, courses, campus services,
+                or any college-related information.
+            </p>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+            <!-- Contact Information -->
+
+            <div class="bg-white rounded-xl shadow-lg p-8">
+
+                <h3 class="text-2xl font-bold mb-6">
+                    Contact Information
+                </h3>
+
+                <div class="space-y-5">
+
+                    <p>
+                        <strong>📍 Address:</strong><br>
+                        K. D. Polytechnic,<br>
+                        Patan, Gujarat
+                    </p>
+
+                    <p>
+                        <strong>📞 Phone:</strong><br>
+                        +91 9876543210
+                    </p>
+
+                    <p>
+                        <strong>📧 Email:</strong><br>
+                        info@kdpolytechnic.edu.in
+                    </p>
+
+                    <p>
+                        <strong>🌐 Website:</strong><br>
+                        www.kdpolytechnic.edu.in
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Contact Form -->
+
+            <div class="bg-white rounded-xl shadow-lg p-8">
+
+                <h3 class="text-2xl font-bold mb-6">
+                    Send a Message
+                </h3>
+
+                <form>
+
+                    <input
+                        type="text"
+                        placeholder="Your Name"
+                        class="w-full border rounded-lg px-4 py-3 mb-4">
+
+                    <input
+                        type="email"
+                        placeholder="Email Address"
+                        class="w-full border rounded-lg px-4 py-3 mb-4">
+
+                    <textarea
+                        rows="5"
+                        placeholder="Write your message..."
+                        class="w-full border rounded-lg px-4 py-3 mb-6"></textarea>
+
+                    <button
+                        type="submit"
+                        class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg">
+
+                        Send Message
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 </body>
 </html>
