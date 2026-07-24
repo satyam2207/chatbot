@@ -286,6 +286,101 @@
     </div>
 
 </section>
+<!-- Footer -->
+
+<footer class="bg-blue-900 text-white py-12">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+            <!-- About -->
+
+            <div>
+
+                <h3 class="text-2xl font-bold mb-4">
+                    College Chatbot
+                </h3>
+
+                <p class="text-gray-300 leading-7">
+                    College Chatbot is an AI-powered assistant that helps students
+                    access admission details, course information, notices and
+                    campus services quickly.
+                </p>
+
+            </div>
+
+            <!-- Quick Links -->
+
+            <div>
+
+                <h3 class="text-xl font-semibold mb-4">
+                    Quick Links
+                </h3>
+
+                <ul class="space-y-3">
+
+                    <li><a href="#" class="hover:text-yellow-300 transition">Home</a></li>
+
+                    <li><a href="#" class="hover:text-yellow-300 transition">About</a></li>
+
+                    <li><a href="#" class="hover:text-yellow-300 transition">Contact</a></li>
+
+                    <li><a href="#" class="hover:text-yellow-300 transition">Login</a></li>
+
+                </ul>
+
+            </div>
+
+            <!-- Contact -->
+
+            <div>
+
+                <h3 class="text-xl font-semibold mb-4">
+                    Contact
+                </h3>
+
+                <p class="mb-2">📍 K. D. Polytechnic, Patan</p>
+
+                <p class="mb-2">📞 +91 9876543210</p>
+
+                <p class="mb-2">📧 info@kdpolytechnic.edu.in</p>
+
+                <p>🌐 www.kdpolytechnic.edu.in</p>
+
+            </div>
+
+        </div>
+
+        <hr class="border-blue-700 my-8">
+
+        <div class="flex flex-col md:flex-row justify-between items-center">
+
+            <p class="text-gray-300 text-sm">
+                © 2026 College Chatbot. All Rights Reserved.
+            </p>
+
+            <div class="flex gap-5 mt-4 md:mt-0">
+
+                <a href="#" class="hover:text-yellow-300 transition">
+                    Facebook
+                </a>
+
+                <a href="#" class="hover:text-yellow-300 transition">
+                    Instagram
+                </a>
+
+                <a href="#" class="hover:text-yellow-300 transition">
+                    LinkedIn
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
 
 </body>
 </html>
