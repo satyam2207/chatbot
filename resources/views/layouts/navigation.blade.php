@@ -37,6 +37,10 @@
                     <x-dropdown-link :href="route('chat')">
                     {{ __('AI Chat') }}
                     </x-dropdown-link>
+                    <x-dropdown-link :href="route('chat.history')">
+                    {{ __('Chat History') }}
+                    </x-dropdown-link>
+
                        <x-dropdown-link :href="route('student.profile')">
                         {{ __('Student Profile') }}
                         </x-dropdown-link>
