@@ -17,7 +17,6 @@
                     </x-nav-link>
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -34,6 +33,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+
+                    <x-dropdown-link :href="route('chat')">
+                    {{ __('AI Chat') }}
+                    </x-dropdown-link>
                        <x-dropdown-link :href="route('student.profile')">
                         {{ __('Student Profile') }}
                         </x-dropdown-link>

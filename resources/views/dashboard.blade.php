@@ -104,9 +104,12 @@
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
 
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-4 font-semibold">
-                        🤖 AI Chat
-                    </button>
+                  <a href="{{ route('chat') }}"
+                 class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-4 font-semibold text-center block">
+
+                  🤖 AI Chat
+
+                  </a>
 
                     <button class="bg-green-600 hover:bg-green-700 text-white rounded-lg py-4 font-semibold">
                         📢 Notices
