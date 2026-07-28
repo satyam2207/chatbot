@@ -34,6 +34,12 @@
 
                     <x-slot name="content">
 
+
+                     <x-dropdown-link :href="route('settings')">
+                    {{ __('Settings') }}
+                     </x-dropdown-link>
+
+
                     <x-dropdown-link :href="route('chat')">
                     {{ __('AI Chat') }}
                     </x-dropdown-link>
@@ -89,6 +95,12 @@
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
+
+            <x-responsive-nav-link :href="route('settings')">
+            {{ __('Settings') }}
+            </x-responsive-nav-link>
+
+           
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
