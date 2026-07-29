@@ -212,6 +212,37 @@
 
     </div>
 
+    <div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Notification Summary
+    </h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+        <div class="text-center">
+            <h3 class="text-3xl font-bold text-blue-600">12</h3>
+            <p class="text-gray-500">Total</p>
+        </div>
+
+        <div class="text-center">
+            <h3 class="text-3xl font-bold text-green-600">5</h3>
+            <p class="text-gray-500">Unread</p>
+        </div>
+
+        <div class="text-center">
+            <h3 class="text-3xl font-bold text-yellow-600">4</h3>
+            <p class="text-gray-500">Academic</p>
+        </div>
+
+        <div class="text-center">
+            <h3 class="text-3xl font-bold text-red-600">3</h3>
+            <p class="text-gray-500">System</p>
+        </div>
+
+    </div>
+
+</div>
 </div>
 
 </x-app-layout>
