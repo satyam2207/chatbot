@@ -39,6 +39,10 @@
                     {{ __('Settings') }}
                      </x-dropdown-link>
 
+                     <x-dropdown-link :href="route('notifications')">
+                    {{ __('Notifications') }}
+                    </x-dropdown-link>
+
 
                     <x-dropdown-link :href="route('chat')">
                     {{ __('AI Chat') }}
