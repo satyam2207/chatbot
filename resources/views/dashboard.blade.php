@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-10 bg-gray-100 min-h-screen">
+    <div class="py-6 md:py-10 bg-gray-100 min-h-screen px-4 md:px-0">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
@@ -72,7 +72,7 @@
 
             <!-- Dashboard Cards -->
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
 
@@ -148,7 +148,7 @@
                     Quick Actions
                 </h2>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
 
                   <a href="{{ route('chat') }}"
                  class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-4 font-semibold text-center block">
@@ -175,7 +175,7 @@
 
             <!-- Notices & Student Info -->
 
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                 <!-- Latest Notices -->
 
@@ -233,7 +233,7 @@
                     Academic Calendar
                 </h2>
 
-                <div class="grid md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                     <div class="border rounded-lg p-5">
 

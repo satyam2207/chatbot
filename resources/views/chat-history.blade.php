@@ -6,10 +6,10 @@
         </h2>
     </x-slot>
 
-    <div class="flex h-[88vh] bg-gray-100">
+    <div class="flex flex-col md:flex-row h-auto md:h-[88vh] bg-gray-100">
 
         <!-- Sidebar -->
-        <div class="w-80 bg-white border-r shadow-lg flex flex-col">
+        <div class="w-full md:w-80 bg-white border-r shadow-lg flex flex-col">
 
             <!-- Header -->
             <div class="p-5 border-b bg-white">
@@ -207,7 +207,7 @@
         </div>
 
         <!-- Right Side -->
-        <div class="flex-1 flex items-center justify-center bg-gray-50">
+        <div class="hidden md:flex flex-1 items-center justify-center bg-gray-50">
 
             <div class="text-center">
 

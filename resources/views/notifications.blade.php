@@ -8,7 +8,7 @@
 
     <div class="p-8 bg-gray-100 min-h-screen">
 
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
             <div>
 
@@ -28,7 +28,7 @@
 
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <div class="bg-white border-l-4 border-green-500 rounded-xl shadow p-5 hover:shadow-lg transition">
                 <h3 class="font-bold">✅ Admission Approved</h3>
@@ -103,5 +103,90 @@
         </div>
 
     </div>
+
+    <!-- Recent Activity -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Recent Activity
+    </h2>
+
+    <div class="space-y-4">
+
+        <div class="flex justify-between border-b pb-3">
+            <span>🤖 AI Chat Session Started</span>
+            <span class="text-gray-500 text-sm">Today</span>
+        </div>
+
+        <div class="flex justify-between border-b pb-3">
+            <span>📢 New Notice Published</span>
+            <span class="text-gray-500 text-sm">Yesterday</span>
+        </div>
+
+        <div class="flex justify-between border-b pb-3">
+            <span>📚 Assignment Uploaded</span>
+            <span class="text-gray-500 text-sm">2 Days Ago</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span>🎓 Semester Registration Completed</span>
+            <span class="text-gray-500 text-sm">Last Week</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Notification Preferences -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Notification Preferences
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="flex justify-between items-center border rounded-lg p-4">
+
+            <div>
+
+                <h3 class="font-semibold">
+                    Email Notifications
+                </h3>
+
+                <p class="text-gray-500 text-sm">
+                    Receive important updates by email.
+                </p>
+
+            </div>
+
+            <input type="checkbox" checked class="w-5 h-5">
+
+        </div>
+
+        <div class="flex justify-between items-center border rounded-lg p-4">
+
+            <div>
+
+                <h3 class="font-semibold">
+                    AI Chat Alerts
+                </h3>
+
+                <p class="text-gray-500 text-sm">
+                    Get notified about AI responses.
+                </p>
+
+            </div>
+
+            <input type="checkbox" checked class="w-5 h-5">
+
+        </div>
+
+    </div>
+
+</div>
 
 </x-app-layout>
