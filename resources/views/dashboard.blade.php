@@ -24,6 +24,52 @@
 
             </div>
 
+            <!-- Dashboard Statistics -->
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
+
+                    <h3 class="text-4xl font-bold text-blue-600">520+</h3>
+
+                    <p class="text-gray-500 mt-2">
+                        Students
+                    </p>
+
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
+
+                    <h3 class="text-4xl font-bold text-green-600">6</h3>
+
+                    <p class="text-gray-500 mt-2">
+                        Departments
+                    </p>
+
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
+
+                    <h3 class="text-4xl font-bold text-purple-600">35+</h3>
+
+                    <p class="text-gray-500 mt-2">
+                        Faculty
+                    </p>
+
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
+
+                    <h3 class="text-4xl font-bold text-red-600">12</h3>
+
+                    <p class="text-gray-500 mt-2">
+                        Active Notices
+                    </p>
+
+                </div>
+
+            </div>
+
             <!-- Dashboard Cards -->
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
@@ -226,6 +272,54 @@
                     </div>
 
                 </div>
+
+            </div>
+
+            <!-- Campus Facilities -->
+
+            <div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+                <h2 class="text-2xl font-bold mb-6">
+                    Campus Facilities
+                </h2>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+                    <div class="text-center">
+                        <div class="text-5xl">📚</div>
+                        <p class="mt-3 font-semibold">Library</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="text-5xl">💻</div>
+                        <p class="mt-3 font-semibold">Computer Lab</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="text-5xl">⚽</div>
+                        <p class="mt-3 font-semibold">Sports</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="text-5xl">🍽️</div>
+                        <p class="mt-3 font-semibold">Canteen</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Dashboard Footer -->
+
+            <div class="text-center text-gray-500 py-8">
+
+                <p>
+                    KDP Connect • Version 1.0
+                </p>
+
+                <p class="text-sm mt-2">
+                    Designed for K.D. Polytechnic Students
+                </p>
 
             </div>
 
