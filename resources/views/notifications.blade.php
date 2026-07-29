@@ -28,6 +28,31 @@
 
         </div>
 
+
+        <div class="flex flex-wrap gap-3 mb-6">
+
+    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+        All
+    </button>
+
+    <button class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">
+        Academic
+    </button>
+
+    <button class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">
+        AI Chat
+    </button>
+
+    <button class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">
+        Fees
+    </button>
+
+    <button class="px-4 py-2 bg-white border rounded-lg hover:bg-gray-100">
+        Events
+    </button>
+
+</div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <div class="bg-white border-l-4 border-green-500 rounded-xl shadow p-5 hover:shadow-lg transition">
