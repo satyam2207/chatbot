@@ -142,4 +142,157 @@
 
     </div>
 
+    <!-- Student Support Services -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Student Support Services
+    </h2>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="border rounded-lg p-5 text-center">
+            <div class="text-5xl mb-3">🎓</div>
+            <h3 class="font-semibold">Academic Support</h3>
+            <p class="text-gray-500 mt-2">
+                Guidance for subjects, assignments and examinations.
+            </p>
+        </div>
+
+        <div class="border rounded-lg p-5 text-center">
+            <div class="text-5xl mb-3">💼</div>
+            <h3 class="font-semibold">Placement Cell</h3>
+            <p class="text-gray-500 mt-2">
+                Internship and campus placement assistance.
+            </p>
+        </div>
+
+        <div class="border rounded-lg p-5 text-center">
+            <div class="text-5xl mb-3">💻</div>
+            <h3 class="font-semibold">Technical Help</h3>
+            <p class="text-gray-500 mt-2">
+                Support for portal login and AI Chat.
+            </p>
+        </div>
+
+        <div class="border rounded-lg p-5 text-center">
+            <div class="text-5xl mb-3">📚</div>
+            <h3 class="font-semibold">Library</h3>
+            <p class="text-gray-500 mt-2">
+                Access books, journals and digital resources.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Office Hours -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Office Hours
+    </h2>
+
+    <table class="w-full border border-gray-300">
+
+        <thead class="bg-blue-600 text-white">
+
+            <tr>
+
+                <th class="p-3 text-left">Department</th>
+                <th class="p-3 text-left">Timing</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr class="border-b">
+                <td class="p-3">Administration</td>
+                <td class="p-3">09:00 AM – 05:00 PM</td>
+            </tr>
+
+            <tr class="border-b">
+                <td class="p-3">Accounts</td>
+                <td class="p-3">10:00 AM – 04:00 PM</td>
+            </tr>
+
+            <tr>
+                <td class="p-3">Computer Department</td>
+                <td class="p-3">10:30 AM – 05:10 PM</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Quick Links -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Quick Links
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-5">
+
+        <a href="{{ route('dashboard') }}"
+           class="border rounded-lg p-5 hover:bg-blue-50 transition">
+
+            🏠 Dashboard
+
+        </a>
+
+        <a href="{{ route('chat') }}"
+           class="border rounded-lg p-5 hover:bg-blue-50 transition">
+
+            🤖 AI Chat
+
+        </a>
+
+        <a href="{{ route('chat.history') }}"
+           class="border rounded-lg p-5 hover:bg-blue-50 transition">
+
+            💬 Chat History
+
+        </a>
+
+        <a href="{{ route('profile.edit') }}"
+           class="border rounded-lg p-5 hover:bg-blue-50 transition">
+
+            👤 Profile Settings
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- Need More Help -->
+
+<div class="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-xl shadow-lg text-white p-8 mt-8 mb-6">
+
+    <h2 class="text-3xl font-bold">
+        Still Need Assistance?
+    </h2>
+
+    <p class="mt-4 text-blue-100">
+        If your question is not answered above, contact the college support team or use KDP Connect AI for instant assistance.
+    </p>
+
+    <a href="{{ route('chat') }}"
+       class="inline-block mt-6 bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
+
+        Open AI Chat
+
+    </a>
+
+</div>
+
 </x-app-layout>
