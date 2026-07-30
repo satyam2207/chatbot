@@ -47,6 +47,10 @@
                     {{ __('Faculty') }}
                     </x-dropdown-link>
 
+                    <x-dropdown-link :href="route('resources')">
+                    {{ __('Student Resources') }}
+                    </x-dropdown-link>
+
 
                     <x-dropdown-link :href="route('help')">
                     {{ __('Help & Support') }}

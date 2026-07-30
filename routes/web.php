@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
 
     Route::view('/chat', 'chat')->name('chat');
 
+    Route::view('/resources', 'resources')->name('resources');
+
     Route::view('/chat-history', 'chat-history')->name('chat.history');
 
     Route::view('/student-profile', 'profile')->name('student.profile');
