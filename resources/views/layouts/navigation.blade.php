@@ -43,6 +43,10 @@
                     {{ __('Notifications') }}
                     </x-dropdown-link>
 
+                    <x-dropdown-link :href="route('faculty')">
+                    {{ __('Faculty') }}
+                    </x-dropdown-link>
+
 
                     <x-dropdown-link :href="route('help')">
                     {{ __('Help & Support') }}

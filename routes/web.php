@@ -17,15 +17,19 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::view('/student-profile', 'profile')->name('student.profile');
-
-    Route::view('/help', 'help')->name('help');
 
     Route::view('/chat', 'chat')->name('chat');
 
     Route::view('/chat-history', 'chat-history')->name('chat.history');
 
+    Route::view('/student-profile', 'profile')->name('student.profile');
+
+    Route::view('/faculty', 'faculty')->name('faculty');
+
+    
       Route::view('/notifications', 'notifications')->name('notifications');
+
+       Route::view('/help', 'help')->name('help');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
