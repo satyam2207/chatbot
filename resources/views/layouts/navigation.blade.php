@@ -68,6 +68,10 @@
                         {{ __('Student Profile') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('departments')">
+                        {{ __('Departments') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('profile.edit')">
                         {{ __('Account Settings') }}
                         </x-dropdown-link>
