@@ -232,6 +232,61 @@
 
 </div>
 
+
+<!-- Quick Department Contacts -->
+
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <h2 class="text-2xl font-bold mb-6">
+        Quick Department Contacts
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="border rounded-lg p-5">
+            <h3 class="font-bold text-lg">Computer Engineering</h3>
+            <p class="text-gray-600 mt-2">
+                Email: computer@kdpp.edu.in
+            </p>
+            <p class="text-gray-600">
+                Phone: +91 98765 10001
+            </p>
+        </div>
+
+        <div class="border rounded-lg p-5">
+            <h3 class="font-bold text-lg">Civil Engineering</h3>
+            <p class="text-gray-600 mt-2">
+                Email: civil@kdpp.edu.in
+            </p>
+            <p class="text-gray-600">
+                Phone: +91 98765 10002
+            </p>
+        </div>
+
+        <div class="border rounded-lg p-5">
+            <h3 class="font-bold text-lg">Mechanical Engineering</h3>
+            <p class="text-gray-600 mt-2">
+                Email: mechanical@kdpp.edu.in
+            </p>
+            <p class="text-gray-600">
+                Phone: +91 98765 10003
+            </p>
+        </div>
+
+        <div class="border rounded-lg p-5">
+            <h3 class="font-bold text-lg">Electrical Engineering</h3>
+            <p class="text-gray-600 mt-2">
+                Email: electrical@kdpp.edu.in
+            </p>
+            <p class="text-gray-600">
+                Phone: +91 98765 10004
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
         </div>
 
     </div>
