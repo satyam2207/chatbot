@@ -12,12 +12,34 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's profile and activity statistics.
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+
+        $chatSessions = $user->chatSessions();
+
+        $statistics = [
+            'total_chats' => (clone $chatSessions)->count(),
+
+            'active_chats' => (clone $chatSessions)
+                ->where('is_archived', false)
+                ->count(),
+
+            'pinned_chats' => (clone $chatSessions)
+                ->where('is_pinned', true)
+                ->count(),
+
+            'total_messages' => $user->chatSessions()
+                ->withCount('messages')
+                ->get()
+                ->sum('messages_count'),
+        ];
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'statistics' => $statistics,
         ]);
     }
 
@@ -26,15 +48,18 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->fill($request->validated());
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')
+            ->with('status', 'profile-updated');
     }
 
     /**
