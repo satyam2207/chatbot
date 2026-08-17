@@ -3,19 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Services\DocumentProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
-    public function index()
-    {
-        $documents = Document::latest()->get();
+   public function index(Request $request)
+{
+    $query = Document::query();
 
-        return view('documents.index', compact('documents'));
+    // Search by title or file name
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', '%' . $search . '%')
+                ->orWhere('file_name', 'like', '%' . $search . '%');
+        });
     }
 
+    // Filter by category
+    if ($request->filled('category')) {
+        $query->where('category', $request->input('category'));
+    }
+
+    $documents = $query
+        ->latest()
+        ->get();
+
+    $categories = Document::query()
+        ->whereNotNull('category')
+        ->where('category', '!=', '')
+        ->distinct()
+        ->orderBy('category')
+        ->pluck('category');
+
+    return view('documents.index', compact(
+        'documents',
+        'categories'
+    ));
+}
     public function create()
     {
         return view('documents.create');
@@ -33,7 +62,7 @@ class DocumentController extends Controller
 
         $path = $file->store('college-documents', 'public');
 
-        Document::create([
+        $document = Document::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'category' => $request->category,
@@ -43,9 +72,24 @@ class DocumentController extends Controller
             'file_size' => $file->getSize(),
         ]);
 
+        /*
+         * Automatically extract and chunk the uploaded document.
+         */
+      try {
+    $processor = app(DocumentProcessor::class);
+
+    $processor->process($document);
+} catch (\Throwable $exception) {
+    report($exception);
+
+    $document->update([
+        'processing_status' => 'failed',
+        'processing_error' => $exception->getMessage(),
+    ]);
+}
         return redirect()
             ->route('documents.index')
-            ->with('success', 'Document uploaded successfully.');
+            ->with('success', 'Document uploaded and processed successfully.');
     }
 
     public function destroy(Document $document)

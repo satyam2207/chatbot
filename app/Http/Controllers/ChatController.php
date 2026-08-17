@@ -9,6 +9,7 @@ use App\Models\Message;
 use App\Models\ChatSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\KnowledgeSearch;
 
 class ChatController extends Controller
 {
@@ -141,14 +142,44 @@ PROMPT;
                 role: $message->sender === 'assistant' ? Role::MODEL : Role::USER,
             ))
             ->all();
+        $knowledgeSearch = app(KnowledgeSearch::class);
+
+        $knowledgeResults = $knowledgeSearch->search(
+            $currentMessage->message,
+            5
+        );
+
+        $knowledgeContext = $knowledgeResults
+    ->map(function ($chunk) {
+        return "Source: " . ($chunk->document->title ?? 'College Document')
+            . "\n" . $chunk->content;
+    })
+    ->implode("\n\n---\n\n");
 
         try {
             $model = Gemini::generativeModel(model: 'gemini-3.6-flash')
                 ->withSystemInstruction(Content::parse(self::SYSTEM_INSTRUCTION));
 
-            $response = $model
-                ->startChat(history: $history)
-                ->sendMessage($currentMessage->message);
+            $prompt = $currentMessage->message;
+
+if ($knowledgeContext !== '') {
+    $prompt = <<<PROMPT
+Use the following college documents as your primary source of information.
+
+COLLEGE DOCUMENT CONTEXT:
+{$knowledgeContext}
+
+USER QUESTION:
+{$currentMessage->message}
+
+Answer the user's question using the college document context when relevant.
+If the documents do not contain the answer, say that the information was not found in the college documents instead of inventing college-specific information.
+PROMPT;
+}
+
+$response = $model
+    ->startChat(history: $history)
+    ->sendMessage($prompt);
         } catch (\Throwable $exception) {
             report($exception);
 
