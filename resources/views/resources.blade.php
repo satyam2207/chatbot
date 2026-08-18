@@ -130,7 +130,212 @@
 </div>
 
 <!-- Resource Categories -->
+<!-- Resource Search & Filter -->
 
+<div class="bg-white rounded-xl shadow-lg p-8 mt-8">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">
+                Find a Resource
+            </h2>
+
+            <p class="text-gray-500 mt-1">
+                Search or filter resources by subject.
+            </p>
+        </div>
+
+        <div class="w-full md:w-80">
+            <input
+                id="resourceSearch"
+                type="text"
+                placeholder="Search resources..."
+                class="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500"
+            >
+        </div>
+
+    </div>
+
+    <div class="flex flex-wrap gap-3 mt-6">
+
+        <button
+            type="button"
+            class="resource-filter px-4 py-2 rounded-lg bg-gray-900 text-white"
+            data-category="all">
+            All
+        </button>
+
+        <button
+            type="button"
+            class="resource-filter px-4 py-2 rounded-lg bg-gray-100 text-gray-700"
+            data-category="programming">
+            Programming
+        </button>
+
+        <button
+            type="button"
+            class="resource-filter px-4 py-2 rounded-lg bg-gray-100 text-gray-700"
+            data-category="database">
+            Database
+        </button>
+
+        <button
+            type="button"
+            class="resource-filter px-4 py-2 rounded-lg bg-gray-100 text-gray-700"
+            data-category="networking">
+            Networking
+        </button>
+
+    </div>
+
+    <div
+        id="resourceResults"
+        class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-7"
+    >
+
+        <div
+            class="resource-item border rounded-xl p-5"
+            data-category="programming"
+            data-name="C C++ Java Python PHP Programming"
+        >
+            <div class="text-3xl">💻</div>
+
+            <h3 class="font-bold text-lg mt-3">
+                Programming
+            </h3>
+
+            <p class="text-gray-500 mt-2">
+                C, C++, Java, Python and PHP learning resources.
+            </p>
+        </div>
+
+        <div
+            class="resource-item border rounded-xl p-5"
+            data-category="database"
+            data-name="SQL MySQL MongoDB DBMS Database"
+        >
+            <div class="text-3xl">🗄️</div>
+
+            <h3 class="font-bold text-lg mt-3">
+                Database
+            </h3>
+
+            <p class="text-gray-500 mt-2">
+                SQL, MySQL, MongoDB and DBMS resources.
+            </p>
+        </div>
+
+        <div
+            class="resource-item border rounded-xl p-5"
+            data-category="networking"
+            data-name="Computer Networks Networking"
+        >
+            <div class="text-3xl">🌐</div>
+
+            <h3 class="font-bold text-lg mt-3">
+                Networking
+            </h3>
+
+            <p class="text-gray-500 mt-2">
+                Computer Networks notes and practical resources.
+            </p>
+        </div>
+
+    </div>
+
+    <div
+        id="noResourceResults"
+        class="hidden text-center py-8 text-gray-500"
+    >
+        No matching resources found.
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const searchInput = document.getElementById('resourceSearch');
+    const filterButtons = document.querySelectorAll('.resource-filter');
+    const resources = document.querySelectorAll('.resource-item');
+    const emptyMessage = document.getElementById('noResourceResults');
+
+    let activeCategory = 'all';
+
+    function filterResources() {
+
+        const searchText = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        resources.forEach(function (resource) {
+
+            const category = resource.dataset.category;
+            const name = resource.dataset.name.toLowerCase();
+
+            const categoryMatch =
+                activeCategory === 'all' ||
+                category === activeCategory;
+
+            const searchMatch =
+                name.includes(searchText);
+
+            if (categoryMatch && searchMatch) {
+                resource.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                resource.classList.add('hidden');
+            }
+
+        });
+
+        if (visibleCount === 0) {
+            emptyMessage.classList.remove('hidden');
+        } else {
+            emptyMessage.classList.add('hidden');
+        }
+    }
+
+    filterButtons.forEach(function (button) {
+
+        button.addEventListener('click', function () {
+
+            activeCategory = button.dataset.category;
+
+            filterButtons.forEach(function (item) {
+                item.classList.remove(
+                    'bg-gray-900',
+                    'text-white'
+                );
+
+                item.classList.add(
+                    'bg-gray-100',
+                    'text-gray-700'
+                );
+            });
+
+            button.classList.remove(
+                'bg-gray-100',
+                'text-gray-700'
+            );
+
+            button.classList.add(
+                'bg-gray-900',
+                'text-white'
+            );
+
+            filterResources();
+        });
+
+    });
+
+    searchInput.addEventListener(
+        'input',
+        filterResources
+    );
+
+});
+</script>
 <div class="bg-white rounded-xl shadow-lg p-8 mt-8">
 
     <h2 class="text-2xl font-bold mb-6">
