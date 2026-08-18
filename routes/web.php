@@ -61,6 +61,8 @@ Route::get('/courses', function () {
 })->name('courses');
 
     Route::view('/resources', 'resources')->name('resources');
+    Route::get('/notices', [\App\Http\Controllers\NoticeController::class, 'index'])
+    ->name('notices');
 
     Route::get('/chat-history', [ChatController::class, 'index'])->name('chat.history');
 
