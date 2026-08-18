@@ -70,7 +70,14 @@
 
                         <x-dropdown-link :href="route('departments')">
                         {{ __('Departments') }}
-                        </x-dropdown-link>
+                        
+                    
+                    <x-dropdown-link :href="route('courses')">
+    {{ __('Courses') }}
+</x-dropdown-link>
+                    
+                    
+                    </x-dropdown-link>
 
                         <x-dropdown-link :href="route('profile.edit')">
                         {{ __('Account Settings') }}

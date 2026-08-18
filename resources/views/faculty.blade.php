@@ -26,72 +26,35 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+                @foreach($faculties as $faculty)
+
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                     <div class="text-5xl text-center">👨‍🏫</div>
-                    <h3 class="text-xl font-bold text-center mt-4">Dr. Rajesh Patel</h3>
-                    <p class="text-center text-gray-500">Head of Department</p>
+
+                    <h3 class="text-xl font-bold text-center mt-4">
+                        {{ $faculty->name }}
+                    </h3>
+
+                    <p class="text-center text-gray-500">
+                        {{ $faculty->designation }}
+                    </p>
+
                     <hr class="my-4">
-                    <p><strong>Department:</strong> Computer Engineering</p>
-                    <p><strong>Qualification:</strong> Ph.D. Computer Science</p>
-                    <p><strong>Experience:</strong> 15 Years</p>
-                    <p><strong>Email:</strong> rajesh@kdp.ac.in</p>
+
+                    <p>
+                        <strong>Department:</strong>
+                        {{ $faculty->department->name ?? 'N/A' }}
+                    </p>
+
+                    <p class="mt-2">
+                        <strong>Email:</strong>
+                        {{ $faculty->email }}
+                    </p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl text-center">👩‍🏫</div>
-                    <h3 class="text-xl font-bold text-center mt-4">Prof. Neha Shah</h3>
-                    <p class="text-center text-gray-500">Assistant Professor</p>
-                    <hr class="my-4">
-                    <p><strong>Department:</strong> Information Technology</p>
-                    <p><strong>Qualification:</strong> M.Tech</p>
-                    <p><strong>Experience:</strong> 8 Years</p>
-                    <p><strong>Email:</strong> neha@kdp.ac.in</p>
-                </div>
+                @endforeach
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl text-center">👨‍💻</div>
-                    <h3 class="text-xl font-bold text-center mt-4">Prof. Amit Mehta</h3>
-                    <p class="text-center text-gray-500">Lecturer</p>
-                    <hr class="my-4">
-                    <p><strong>Department:</strong> Computer Engineering</p>
-                    <p><strong>Qualification:</strong> M.E.</p>
-                    <p><strong>Experience:</strong> 6 Years</p>
-                    <p><strong>Email:</strong> amit@kdp.ac.in</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl text-center">👩‍💻</div>
-                    <h3 class="text-xl font-bold text-center mt-4">Prof. Pooja Desai</h3>
-                    <p class="text-center text-gray-500">Lecturer</p>
-                    <hr class="my-4">
-                    <p><strong>Department:</strong> Electronics</p>
-                    <p><strong>Qualification:</strong> M.Tech</p>
-                    <p><strong>Experience:</strong> 7 Years</p>
-                    <p><strong>Email:</strong> pooja@kdp.ac.in</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl text-center">👨‍🔬</div>
-                    <h3 class="text-xl font-bold text-center mt-4">Prof. Kunal Joshi</h3>
-                    <p class="text-center text-gray-500">Assistant Professor</p>
-                    <hr class="my-4">
-                    <p><strong>Department:</strong> Civil Engineering</p>
-                    <p><strong>Qualification:</strong> M.E.</p>
-                    <p><strong>Experience:</strong> 10 Years</p>
-                    <p><strong>Email:</strong> kunal@kdp.ac.in</p>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl text-center">👩‍🔬</div>
-                    <h3 class="text-xl font-bold text-center mt-4">Prof. Rina Trivedi</h3>
-                    <p class="text-center text-gray-500">Lecturer</p>
-                    <hr class="my-4">
-                    <p><strong>Department:</strong> Mechanical Engineering</p>
-                    <p><strong>Qualification:</strong> M.Tech</p>
-                    <p><strong>Experience:</strong> 9 Years</p>
-                    <p><strong>Email:</strong> rina@kdp.ac.in</p>
-                </div>
-
+        
             </div>
 
         </div>

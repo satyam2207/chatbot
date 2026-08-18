@@ -26,53 +26,47 @@
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl">💻</div>
-                    <h3 class="text-xl font-bold mt-4">Computer Engineering</h3>
-                    <p class="text-gray-500 mt-3">
-                        Programming, AI, Networking, Database and Software Development.
-                    </p>
-                </div>
+                @forelse($departments as $department)
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl">⚡</div>
-                    <h3 class="text-xl font-bold mt-4">Electrical Engineering</h3>
-                    <p class="text-gray-500 mt-3">
-                        Power systems, machines and electrical technology.
-                    </p>
-                </div>
+    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl">🏗️</div>
-                    <h3 class="text-xl font-bold mt-4">Civil Engineering</h3>
-                    <p class="text-gray-500 mt-3">
-                        Construction, surveying and structural engineering.
-                    </p>
-                </div>
+        <div class="text-5xl">
+            💻
+        </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl">⚙️</div>
-                    <h3 class="text-xl font-bold mt-4">Mechanical Engineering</h3>
-                    <p class="text-gray-500 mt-3">
-                        Manufacturing, machines and industrial technology.
-                    </p>
-                </div>
+        <h3 class="text-xl font-bold mt-4">
+            {{ $department->name }}
+        </h3>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl">📡</div>
-                    <h3 class="text-xl font-bold mt-4">Electronics</h3>
-                    <p class="text-gray-500 mt-3">
-                        Embedded systems, communication and digital electronics.
-                    </p>
-                </div>
+        <p class="text-xs font-semibold text-indigo-600 mt-1">
+            {{ $department->code }}
+        </p>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-                    <div class="text-5xl">🧪</div>
-                    <h3 class="text-xl font-bold mt-4">Science & Humanities</h3>
-                    <p class="text-gray-500 mt-3">
-                        Mathematics, Physics, English and foundational subjects.
-                    </p>
-                </div>
+        <p class="text-gray-500 mt-3">
+            {{ $department->description ?? 'Department information available through KDP Connect.' }}
+        </p>
+
+        <div class="mt-5 pt-4 border-t flex justify-between">
+
+            <span class="text-gray-500 text-sm">
+                Faculty
+            </span>
+
+            <span class="font-bold text-indigo-600">
+                {{ $department->faculties_count }}
+            </span>
+
+        </div>
+
+    </div>
+
+@empty
+
+    <div class="col-span-full bg-white rounded-xl p-8 text-center text-gray-500">
+        No departments available.
+    </div>
+
+@endforelse
 
             </div>
 

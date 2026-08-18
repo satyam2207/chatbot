@@ -30,7 +30,7 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
 
-                    <h3 class="text-4xl font-bold text-blue-600">520+</h3>
+                    <h3 class="text-4xl font-bold text-blue-600">{{ $statistics['students'] }}</h3>
 
                     <p class="text-gray-500 mt-2">
                         Students
@@ -40,7 +40,7 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
 
-                    <h3 class="text-4xl font-bold text-green-600">6</h3>
+                    <h3 class="text-4xl font-bold text-green-600">{{ $statistics['departments'] }}</h3>
 
                     <p class="text-gray-500 mt-2">
                         Departments
@@ -50,7 +50,7 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
 
-                    <h3 class="text-4xl font-bold text-purple-600">35+</h3>
+                    <h3 class="text-4xl font-bold text-purple-600">{{ $statistics['faculty'] }}</h3>
 
                     <p class="text-gray-500 mt-2">
                         Faculty
@@ -60,7 +60,7 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition">
 
-                    <h3 class="text-4xl font-bold text-red-600">12</h3>
+                    <h3 class="text-4xl font-bold text-red-600">{{ $statistics['notices'] }}</h3>
 
                     <p class="text-gray-500 mt-2">
                         Active Notices
@@ -89,6 +89,26 @@
                     </p>
 
                 </div>
+
+                                @foreach($departments as $department)
+
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+                    <div class="text-5xl">🎓</div>
+
+                    <h3 class="text-xl font-bold mt-4">
+                        {{ $department->name }}
+                    </h3>
+
+                    <p class="text-gray-500 mt-3">
+                        {{ $department->description }}
+                    </p>
+
+                    <p class="text-sm text-blue-600 mt-4 font-semibold">
+                        {{ $department->faculties_count }} Faculty Members
+                    </p>
+                </div>
+
+                @endforeach
 
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
 
@@ -157,6 +177,13 @@
 
                   </a>
 
+                  <a href="{{ route('chat.analytics') }}"
+   class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg py-4 font-semibold text-center block transition">
+
+    📊 Chat Database
+
+</a>
+
                     <button class="bg-green-600 hover:bg-green-700 text-white rounded-lg py-4 font-semibold">
                         📢 Notices
                     </button>
@@ -187,14 +214,20 @@
 
                     <ul class="space-y-4 text-gray-700">
 
-                        <li>📢 Mid Semester Examination begins from 12 August.</li>
+                       @foreach($latestNotices as $notice)
 
-                        <li>🎉 Freshers Orientation Programme on 5 August.</li>
+    <li>
+        📢
+        <strong>{{ $notice->title }}</strong>
 
-                        <li>📄 Scholarship application forms are available.</li>
+        @if($notice->description)
+            <span class="text-gray-500">
+                — {{ $notice->description }}
+            </span>
+        @endif
+    </li>
 
-                        <li>🏆 Sports Week registrations are now open.</li>
-
+@endforeach
                     </ul>
 
                 </div>

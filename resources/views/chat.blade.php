@@ -13,18 +13,52 @@
                 </div>
             </div>
 
-            <button class="new-chat-btn" type="button">
-                <span>＋</span>
-                New chat
-            </button>
+            <a href="{{ route('chat', ['new' => 1]) }}" class="new-chat-btn">
+    <span>＋</span>
+    New chat
+</a>
+
+            <a href="{{ route('chat.analytics') }}"
+   class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-100 transition">
+    <span class="text-xl">📊</span>
+    <span class="font-medium">Chat Analytics</span>
+</a>
 
             <div class="sidebar-title">Chats</div>
 
             <div class="chat-list">
-                <div class="chat-list-empty">
-                    Your conversations will appear here.
-                </div>
+    @php
+       $sidebarChats = \App\Models\ChatSession::where('user_id', auth()->id())
+    ->latest('updated_at')
+    ->take(8)
+    ->get();
+
+if ($session && !$sidebarChats->contains('id', $session->id)) {
+    $sidebarChats->push($session);
+}
+    @endphp
+
+    @forelse ($sidebarChats as $chat)
+        <a
+            href="{{ route('chat', ['session' => $chat->id]) }}"
+           class="chat-list-item {{ $chat->id == $session->id ? 'active' : '' }}"
+        >
+            <div class="chat-list-icon">💬</div>
+
+            <div class="chat-list-content">
+                <strong>{{ $chat->title }}</strong>
+
+                <small>
+                    {{ optional($chat->updated_at)->diffForHumans() }}
+                </small>
             </div>
+        </a>
+    @empty
+        <div class="chat-list-empty">
+            No previous conversations yet.
+        </div>
+    @endforelse
+</div>
 
             <div class="sidebar-bottom">
 
@@ -87,6 +121,7 @@
             <!-- CHAT CONTENT -->
             <section class="chat-content" id="chatContent">
 
+
     @if ($messages->count() > 0)
 
         <div class="messages-container">
@@ -124,22 +159,24 @@
                 courses, exams and student services.
             </p>
 
-            <div class="suggestions">
+        <div class="suggestions">
 
-                <button type="button">
-                    📚 Help me with my studies
-                </button>
+    <button type="button"
+        onclick="document.querySelector('textarea[name=message]').value='Help me with my studies'; document.querySelector('textarea[name=message]').focus();">
+        📚 Help me with my studies
+    </button>
 
-                <button type="button">
-                    📝 Explain a topic
-                </button>
+    <button type="button"
+        onclick="document.querySelector('textarea[name=message]').value='Explain a topic'; document.querySelector('textarea[name=message]').focus();">
+        📝 Explain a topic
+    </button>
 
-                <button type="button">
-                    🎓 College information
-                </button>
+    <button type="button"
+        onclick="document.querySelector('textarea[name=message]').value='Tell me about my college'; document.querySelector('textarea[name=message]').focus();">
+        🎓 College information
+    </button>
 
-            </div>
-
+</div>
         </div>
 
     @endif
@@ -555,7 +592,7 @@
             overflow-y: auto;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 40px 24px;
         }
 
@@ -802,10 +839,255 @@
                 height: 36px;
             }
         }
+
+        /* =========================
+   PRESENTATION UI UPGRADE
+========================= */
+
+.chat-app {
+    background: #f8fafc;
+}
+
+/* Sidebar branding */
+.chat-brand {
+    padding: 22px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.brand-logo,
+.ai-logo,
+.message-avatar {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.20);
+}
+
+/* Main header */
+.chat-header {
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #e5e7eb;
+    backdrop-filter: blur(10px);
+}
+
+.chat-title h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.online-status {
+    color: #16a34a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.online-status i {
+    background: #22c55e;
+    box-shadow: 0 0 0 4px #dcfce7;
+}
+
+/* Empty welcome screen */
+.chat-empty {
+    max-width: 720px;
+    margin: auto;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.chat-empty .ai-logo {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    font-size: 32px;
+}
+
+.chat-empty h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.chat-empty p {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+/* Suggestion cards */
+.suggestions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.suggestions button {
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    color: #374151;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+}
+
+.suggestions button:hover {
+    border-color: #93c5fd;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.10);
+}
+
+/* Messages */
+.message-bubble {
+    line-height: 1.65;
+    font-size: 15px;
+}
+
+.user-message .message-bubble {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+    border-radius: 18px 18px 5px 18px;
+    box-shadow: 0 5px 15px rgba(37,99,235,0.15);
+}
+
+.assistant-message .message-bubble {
+    background: white;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px 18px 18px 18px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+/* Composer */
+.composer-area {
+    background: linear-gradient(to top, #f8fafc 75%, transparent);
+    padding-top: 18px;
+}
+
+.chat-composer {
+    background: white;
+    border: 1px solid #dbe3ef;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(15,23,42,0.08);
+    transition: all 0.2s ease;
+}
+
+.chat-composer:focus-within {
+    border-color: #60a5fa;
+    box-shadow: 0 8px 30px rgba(37,99,235,0.12);
+}
+
+.chat-composer textarea {
+    color: #111827;
+}
+
+.chat-composer textarea::placeholder {
+    color: #9ca3af;
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.send-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(37,99,235,0.25);
+}
+
+.composer-note {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .suggestions {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-empty h2 {
+        font-size: 26px;
+    }
+
+    .chat-empty {
+        padding: 25px 15px;
+    }
+}
+
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #374151;
+    transition: 0.2s ease;
+}
+
+.chat-list-item:hover {
+    background: #eff6ff;
+}
+.chat-list-item.active {
+    background: #eef2ff;
+    color: #3730a3;
+    font-weight: 600;
+}
+
+.chat-list-item.active .chat-list-icon {
+    background: #e0e7ff;
+}
+
+.chat-list-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f4f6;
+    border-radius: 10px;
+}
+
+.chat-list-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.chat-list-content strong {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-list-content small {
+    font-size: 11px;
+    color: #9ca3af;
+}
     </style>
 
 
    <script>
+    console.log('CHAT SCRIPT LOADED');
 document.addEventListener('DOMContentLoaded', function () {
 
     const form = document.getElementById('chatForm');
@@ -1034,6 +1316,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', async function (event) {
 
+        console.log('CHAT FORM HANDLER RUNNING');
         event.preventDefault();
 
 
@@ -1078,79 +1361,78 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(form);
 
 
-        try {
+try {
+    const response = await fetch(form.action, {
+        method: 'POST',
 
-            const response = await fetch(form.action, {
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
 
-                method: 'POST',
-
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-
-                body: formData
-
-            });
-
-
-            const data = await response.json();
-
-
-            console.log('Chatbot response:', data);
-
-
-            if (!response.ok || !data.success) {
-
-                throw new Error(
-                    data.message ||
-                    'Chatbot response failed.'
-                );
-            }
-
-
-            /*
-             * Remove "thinking..."
-             */
-            removeTyping();
-
-
-            /*
-             * Show Gemini answer
-             */
-            addMessage(data.reply, 'assistant');
-
-
-        } catch (error) {
-
-            console.error('Chat error:', error);
-
-
-            removeTyping();
-
-
-            /*
-             * Show error inside chat
-             * instead of popup
-             */
-            addMessage(
-                'Sorry, I could not process that message. Please try again.',
-                'assistant'
-            );
-
-
-        } finally {
-
-            sendButton.disabled = false;
-
-            sendButton.textContent = '↑';
-
-            textarea.focus();
-        }
-
+        body: formData
     });
 
+    console.log('HTTP STATUS:', response.status);
+
+    const contentType = response.headers.get('content-type') || '';
+
+    if (!contentType.includes('application/json')) {
+        const text = await response.text();
+
+        console.error('SERVER RESPONSE:', text);
+
+        throw new Error(
+            `Server returned non-JSON (${response.status})`
+        );
+    }
+
+    const data = await response.json();
+
+    console.log('CHATBOT RESPONSE:', data);
+
+    if (!response.ok || !data.success) {
+        throw new Error(
+            data.message || 'Chatbot response failed.'
+        );
+    }
+
+    removeTyping();
+
+    addMessage(data.reply, 'assistant');
+
+} catch (error) {
+
+    console.error('Chat error:', error);
+
+    removeTyping();
+
+    addMessage(
+        'Sorry, I could not process that message. Please try again.',
+        'assistant'
+    );
+
+} finally {
+
+    sendButton.disabled = false;
+    sendButton.textContent = '↑';
+    textarea.focus();
+}
+
 });
+});
+
+function useSuggestion(text) {
+    if (!textarea) return;
+
+    textarea.value = text;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    textarea.focus();
+}
+
+
+
 </script>
 
 </x-app-layout>

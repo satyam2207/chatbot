@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ChatAnalyticsController;
+use App\Http\Controllers\DashboardController;
 
 
 Route::get('/', function () {
@@ -14,13 +16,15 @@ Route::get('/settings', function () {
     return view('settings');
 })->middleware('auth')->name('settings');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
 
 
+    Route::get('/chat-analytics', [ChatAnalyticsController::class, 'index'])
+    ->name('chat.analytics');
 Route::get('/documents', [DocumentController::class, 'index'])
     ->name('documents.index');
 
@@ -38,7 +42,23 @@ Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])
     Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
 
-    Route::view('/departments', 'departments')->name('departments');
+    Route::get('/departments', function () {
+    $departments = \App\Models\Department::where('is_active', true)
+        ->withCount('faculties')
+        ->get();
+
+       
+
+    return view('departments', compact('departments'));
+})->name('departments');
+
+Route::get('/courses', function () {
+    $courses = \App\Models\Course::where('is_active', true)
+        ->with('department')
+        ->get();
+
+    return view('courses', compact('courses'));
+})->name('courses');
 
     Route::view('/resources', 'resources')->name('resources');
 
@@ -46,10 +66,22 @@ Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])
 
     Route::view('/student-profile', 'profile')->name('student.profile');
 
-    Route::view('/faculty', 'faculty')->name('faculty');
+    Route::get('/faculty', function () {
+    $faculties = \App\Models\Faculty::with('department')
+        ->where('is_active', true)
+        ->get();
+
+    return view('faculty', compact('faculties'));
+})->name('faculty');
 
     
-      Route::view('/notifications', 'notifications')->name('notifications');
+      Route::get('/notifications', function () {
+    $notifications = \App\Models\Notice::where('is_active', true)
+        ->latest('notice_date')
+        ->get();
+
+    return view('notifications', compact('notifications'));
+})->name('notifications');
 
        Route::view('/help', 'help')->name('help');
 
