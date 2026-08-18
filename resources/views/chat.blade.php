@@ -43,10 +43,33 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
             href="{{ route('chat', ['session' => $chat->id]) }}"
            class="chat-list-item {{ $chat->id == $session->id ? 'active' : '' }}"
         >
-            <div class="chat-list-icon">💬</div>
+            <div class="chat-list-icon">
+    {{ $chat->is_pinned ? '📌' : '💬' }}
+</div>
 
             <div class="chat-list-content">
                 <strong>{{ $chat->title }}</strong>
+                <div class="chat-actions">
+
+    <form method="POST" action="{{ route('chat.pin', $chat->id) }}">
+        @csrf
+        @method('PATCH')
+
+        <button type="submit" title="{{ $chat->is_pinned ? 'Unpin chat' : 'Pin chat' }}">
+            {{ $chat->is_pinned ? '📌' : '📍' }}
+        </button>
+    </form>
+
+    <form method="POST" action="{{ route('chat.archive', $chat->id) }}">
+        @csrf
+        @method('PATCH')
+
+        <button type="submit" title="{{ $chat->is_archived ? 'Restore chat' : 'Archive chat' }}">
+            {{ $chat->is_archived ? '↩️' : '📦' }}
+        </button>
+    </form>
+
+</div>
 
                 <small>
                     {{ optional($chat->updated_at)->diffForHumans() }}
@@ -373,7 +396,7 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
         ========================= */
 
         .chat-sidebar {
-            width: 270px;
+            width: 280px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
@@ -1401,6 +1424,12 @@ try {
     removeTyping();
 
     addMessage(data.reply, 'assistant');
+    
+    const activeChat = document.querySelector('.chat-list-item.active strong');
+
+if (activeChat && data.title) {
+    activeChat.textContent = data.title;
+}
 
 } catch (error) {
 

@@ -65,6 +65,9 @@ Route::get('/courses', function () {
     ->name('notices');
 
     Route::get('/chat-history', [ChatController::class, 'index'])->name('chat.history');
+    Route::patch('/chat/{chatSession}/pin', [ChatController::class, 'togglePin'])->name('chat.pin');
+
+    Route::patch('/chat/{chatSession}/archive', [ChatController::class, 'toggleArchive'])->name('chat.archive');
 
     Route::view('/student-profile', 'profile')->name('student.profile');
 
