@@ -6,6 +6,10 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ChatAnalyticsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminNoticeController;
+use App\Http\Controllers\AdminDepartmentController;
+use App\Http\Controllers\AdminFacultyController;
 
 
 Route::get('/', function () {
@@ -22,6 +26,65 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 Route::middleware('auth')->group(function () {
 
+
+   Route::middleware('admin')->group(function () {
+
+
+    Route::resource('admin/faculty', AdminFacultyController::class)
+    ->except(['show'])
+    ->names([
+        'index' => 'admin.faculty',
+        'create' => 'admin.faculty.create',
+        'store' => 'admin.faculty.store',
+        'edit' => 'admin.faculty.edit',
+        'update' => 'admin.faculty.update',
+        'destroy' => 'admin.faculty.destroy',
+    ]);
+
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->name('admin.dashboard');
+
+        Route::middleware('admin')->group(function () {
+
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->name('admin.dashboard');
+
+    Route::resource('admin/notices', AdminNoticeController::class)
+        ->except(['show'])
+        ->names([
+            'index' => 'admin.notices',
+            'create' => 'admin.notices.create',
+            'store' => 'admin.notices.store',
+            'edit' => 'admin.notices.edit',
+            'update' => 'admin.notices.update',
+            'destroy' => 'admin.notices.destroy',
+        ]);
+
+    // ADD DEPARTMENT ROUTES HERE
+    Route::resource('admin/departments', AdminDepartmentController::class)
+        ->except(['show'])
+        ->names([
+            'index' => 'admin.departments',
+            'create' => 'admin.departments.create',
+            'store' => 'admin.departments.store',
+            'edit' => 'admin.departments.edit',
+            'update' => 'admin.departments.update',
+            'destroy' => 'admin.departments.destroy',
+        ]);
+
+});
+
+    Route::resource('admin/notices', AdminNoticeController::class)
+        ->except(['show'])
+        ->names([
+            'index' => 'admin.notices',
+            'create' => 'admin.notices.create',
+            'store' => 'admin.notices.store',
+            'edit' => 'admin.notices.edit',
+            'update' => 'admin.notices.update',
+            'destroy' => 'admin.notices.destroy',
+        ]);
+});
 
     Route::get('/chat-analytics', [ChatAnalyticsController::class, 'index'])
     ->name('chat.analytics');
