@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 
 
 Route::get('/', function () {
@@ -23,16 +24,14 @@ Route::middleware('auth')->group(function () {
     
 
 
-    Route::view('/chat', 'chat')->name('chat');
-
-  
+    Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
+    Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
 
     Route::view('/departments', 'departments')->name('departments');
 
     Route::view('/resources', 'resources')->name('resources');
 
-    Route::view('/chat-history', 'chat-history')
-    ->name('chat.history');
+    Route::get('/chat-history', [ChatController::class, 'index'])->name('chat.history');
 
     Route::view('/student-profile', 'profile')->name('student.profile');
 

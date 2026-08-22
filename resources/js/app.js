@@ -1,6 +1,7 @@
 
 
 import Alpine from 'alpinejs';
+import './chat';
 
 window.Alpine = Alpine;
 
