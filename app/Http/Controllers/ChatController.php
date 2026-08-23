@@ -2,93 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use Gemini\Laravel\Facades\Gemini;
-use Gemini\Data\Content;
-use Gemini\Enums\Role;
-use App\Models\Message;
 use App\Models\ChatSession;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\KnowledgeSearch;
 
 class ChatController extends Controller
 {
-    private const CONTEXT_MESSAGE_LIMIT = 20;
-
-    private const SYSTEM_INSTRUCTION = <<<'PROMPT'
-You are KDP Connect AI, a helpful assistant for K.D. Polytechnic.
-
-Prioritize clear, accurate, student-friendly help about K.D. Polytechnic, diploma courses, departments, admissions, fees, facilities, college services, academic information, student matters, and general educational questions. Use the conversation history to understand follow-up questions.
-
-Do not invent or assume K.D. Polytechnic-specific facts. When verified college-specific information is not available in the conversation, say so clearly and suggest checking the official college source or contacting the college office. Distinguish general educational or admission guidance from verified K.D. Polytechnic information.
-
-For unrelated questions, you may answer briefly when useful, while politely noting that your primary purpose is college and education assistance.
-PROMPT;
-
+    /**
+     * Display the user's chat workspace.
+     */
     public function chat(Request $request)
     {
-        $sessions = ChatSession::where('user_id', Auth::id());
+        $user = Auth::user();
 
-        if ($request->boolean('new')) {
-            $session = ChatSession::create([
-                'user_id' => Auth::id(),
-                'title' => 'New Chat',
-            ]);
+        $sessions = ChatSession::where('user_id', $user->id)
+            ->with('latestMessage')
+            ->orderByDesc('is_pinned')
+            ->orderByDesc('last_message_at')
+            ->orderByDesc('updated_at')
+            ->get();
 
-            return redirect()->route('chat', ['session' => $session->id]);
-        } elseif ($request->filled('session')) {
-            $session = $sessions->whereKey($request->integer('session'))->firstOrFail();
+        if ($request->filled('session')) {
+            $session = $sessions->firstWhere(
+                'id',
+                $request->integer('session')
+            );
+
+            if (!$session) {
+                abort(404);
+            }
         } else {
-            $session = $sessions
-                ->orderByDesc('last_message_at')
-                ->latest('updated_at')
-                ->first();
+            $session = $sessions->first();
 
-            if (! $session) {
-                $session = ChatSession::create([
-                    'user_id' => Auth::id(),
-                    'title' => 'New Chat',
-                ]);
-
-                return redirect()->route('chat', ['session' => $session->id]);
+            if (!$session) {
+                $session = $this->createNewSession($user->id);
+                $sessions = collect([$session]);
             }
         }
 
-        $messages = $session->messages()->orderBy('id')->get();
-
-        return view('chat', compact('session', 'messages'));
-    }
-
-    public function index()
-    {
-        $sessions = ChatSession::where('user_id', Auth::id())
-            ->orderByDesc('last_message_at')
-            ->latest('updated_at')
-            ->with('latestMessage')
+        $messages = Message::where('chat_session_id', $session->id)
+            ->orderBy('created_at')
             ->get();
 
-        return view('chat-history', compact('sessions'));
+        return view('chat', [
+            'session' => $session,
+            'sessions' => $sessions,
+            'messages' => $messages,
+        ]);
     }
 
+    /**
+     * Create a new chat session.
+     */
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'nullable|string|max:255',
         ]);
 
-        ChatSession::create([
+        $session = ChatSession::create([
             'user_id' => Auth::id(),
-            'title' => $request->title ?? 'New Chat',
+            'title' => $request->input('title', 'New Chat'),
+            'description' => 'College AI conversation',
+            'is_pinned' => false,
+            'is_archived' => false,
         ]);
 
-        return redirect()->back()->with('success', 'Chat session created.');
+        return redirect()
+            ->route('chat', ['session' => $session->id])
+            ->with('success', 'New chat created.');
     }
 
+    /**
+     * Rename an existing chat.
+     */
     public function update(Request $request, ChatSession $chatSession)
     {
-        if ($chatSession->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeSession($chatSession);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -98,19 +89,60 @@ PROMPT;
             'title' => $request->title,
         ]);
 
-        return redirect()->back()->with('success', 'Chat renamed.');
+        return redirect()
+            ->back()
+            ->with('success', 'Chat renamed successfully.');
     }
 
+    /**
+     * Delete a chat and its messages.
+     */
     public function destroy(ChatSession $chatSession)
     {
-        if ($chatSession->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorizeSession($chatSession);
 
         $chatSession->delete();
 
-        return redirect()->back()->with('success', 'Chat deleted.');
+        return redirect()
+            ->route('chat')
+            ->with('success', 'Chat deleted successfully.');
     }
+
+    /**
+     * Pin or unpin a chat.
+     */
+    public function togglePin(ChatSession $chatSession)
+    {
+        $this->authorizeSession($chatSession);
+
+        $chatSession->update([
+            'is_pinned' => !$chatSession->is_pinned,
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Archive or restore a chat.
+     */
+    public function toggleArchive(ChatSession $chatSession)
+    {
+        $this->authorizeSession($chatSession);
+
+        $chatSession->update([
+            'is_archived' => !$chatSession->is_archived,
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Store a user message.
+     *
+     * AI generation is intentionally kept separate from the
+     * database layer so the chat system remains functional
+     * even when an AI provider is unavailable.
+     */
     public function sendMessage(Request $request)
     {
         $request->validate([
@@ -122,91 +154,68 @@ PROMPT;
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        // Save user's message
-        $currentMessage = Message::create([
+        $message = Message::create([
             'chat_session_id' => $session->id,
             'sender' => 'user',
             'message' => $request->message,
             'is_read' => true,
         ]);
 
-        // Keep the newest prior turns from this authenticated session in chronological order.
-        $history = $session->messages()
-            ->where('id', '<', $currentMessage->id)
-            ->latest('id')
-            ->take(self::CONTEXT_MESSAGE_LIMIT)
-            ->get()
-            ->reverse()
-            ->map(fn (Message $message) => Content::parse(
-                part: $message->message,
-                role: $message->sender === 'assistant' ? Role::MODEL : Role::USER,
-            ))
-            ->all();
-        $knowledgeSearch = app(KnowledgeSearch::class);
-
-        $knowledgeResults = $knowledgeSearch->search(
-            $currentMessage->message,
-            5
-        );
-
-        $knowledgeContext = $knowledgeResults
-    ->map(function ($chunk) {
-        return "Source: " . ($chunk->document->title ?? 'College Document')
-            . "\n" . $chunk->content;
-    })
-    ->implode("\n\n---\n\n");
-
-        try {
-            $model = Gemini::generativeModel(model: 'gemini-3.6-flash')
-                ->withSystemInstruction(Content::parse(self::SYSTEM_INSTRUCTION));
-
-            $prompt = $currentMessage->message;
-
-if ($knowledgeContext !== '') {
-    $prompt = <<<PROMPT
-Use the following college documents as your primary source of information.
-
-COLLEGE DOCUMENT CONTEXT:
-{$knowledgeContext}
-
-USER QUESTION:
-{$currentMessage->message}
-
-Answer the user's question using the college document context when relevant.
-If the documents do not contain the answer, say that the information was not found in the college documents instead of inventing college-specific information.
-PROMPT;
-}
-
-$response = $model
-    ->startChat(history: $history)
-    ->sendMessage($prompt);
-        } catch (\Throwable $exception) {
-            report($exception);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'The AI service is temporarily unavailable. Please try again.',
-            ], 502);
-        }
-
-        $reply = $response->text();
-
-        // Save Gemini's response
-        Message::create([
-            'chat_session_id' => $session->id,
-            'sender' => 'assistant',
-            'message' => $reply,
-            'is_read' => true,
-        ]);
-
-        // Update latest message time
         $session->update([
             'last_message_at' => now(),
         ]);
 
         return response()->json([
             'success' => true,
-            'reply' => $reply,
+            'message' => [
+                'id' => $message->id,
+                'sender' => $message->sender,
+                'message' => $message->message,
+                'created_at' => $message->created_at->toISOString(),
+            ],
+        ]);
+    }
+
+    /**
+     * Return chat history for the authenticated user.
+     */
+    public function history(Request $request)
+    {
+        $sessions = ChatSession::where('user_id', Auth::id())
+            ->withCount('messages')
+            ->with('latestMessage')
+            ->orderByDesc('is_pinned')
+            ->orderByDesc('last_message_at')
+            ->orderByDesc('updated_at')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'sessions' => $sessions,
+        ]);
+    }
+
+    /**
+     * Verify that the current user owns the chat session.
+     */
+    private function authorizeSession(ChatSession $chatSession): void
+    {
+        if ($chatSession->user_id !== Auth::id()) {
+            abort(403, 'You are not authorized to modify this chat.');
+        }
+    }
+
+    /**
+     * Create the first chat for a user.
+     */
+    private function createNewSession(int $userId): ChatSession
+    {
+        return ChatSession::create([
+            'user_id' => $userId,
+            'title' => 'New Chat',
+            'description' => 'College AI conversation',
+            'is_pinned' => false,
+            'is_archived' => false,
         ]);
     }
 }
