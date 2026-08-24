@@ -5,7 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
-class OllamaService
+class OpenRouterService
 {
     private string $baseUrl = 'https://openrouter.ai/api/v1';
 

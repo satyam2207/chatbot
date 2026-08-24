@@ -68,73 +68,101 @@ class KnowledgeSearch
     /**
      * Extract useful words from the user's question.
      */
-    private function extractKeywords(string $query): array
-    {
-        $query = strtolower($query);
+   private function extractKeywords(string $query): array
+{
+    $query = strtolower($query);
 
-        $query = preg_replace(
-            '/[^\p{L}\p{N}\s]/u',
-            ' ',
-            $query
-        );
+    // Common student/chat abbreviations and natural-language variations.
+    $query = str_replace([
+        'clg',
+        'collage',
+        'poly',
+        'located',
+        'whereabouts',
+        'where is',
+        "where's",
+    ], [
+        'college',
+        'college',
+        'polytechnic',
+        'location',
+        'location',
+        'location',
+        'location',
+    ], $query);
 
-        $words = preg_split(
-            '/\s+/',
-            trim($query)
-        );
+    $query = preg_replace(
+        '/[^\p{L}\p{N}\s]/u',
+        ' ',
+        $query
+    );
 
-        $stopWords = [
-            'a',
-            'an',
-            'the',
-            'is',
-            'are',
-            'am',
-            'was',
-            'were',
-            'what',
-            'which',
-            'who',
-            'where',
-            'when',
-            'how',
-            'why',
-            'can',
-            'could',
-            'would',
-            'should',
-            'do',
-            'does',
-            'did',
-            'tell',
-            'me',
-            'about',
-            'please',
-            'for',
-            'of',
-            'to',
-            'in',
-            'on',
-            'at',
-            'and',
-            'or',
-            'with',
-            'from',
-            'my',
-            'your',
-            'our',
-            'this',
-            'that',
-        ];
+    $words = preg_split(
+        '/\s+/',
+        trim($query)
+    );
 
-        return collect($words)
-            ->filter(fn ($word) => strlen($word) >= 3)
-            ->reject(fn ($word) => in_array($word, $stopWords))
-            ->unique()
-            ->values()
-            ->all();
+    $stopWords = [
+        'a', 'an', 'the',
+        'is', 'are', 'am',
+        'was', 'were',
+        'what', 'which', 'who',
+        'where', 'when', 'how', 'why',
+        'can', 'could', 'would', 'should',
+        'do', 'does', 'did',
+        'tell', 'me',
+        'about', 'please',
+        'for', 'of', 'to', 'in',
+        'on', 'at', 'and', 'or',
+        'with', 'from',
+        'my', 'your', 'our',
+        'this', 'that',
+        'college',
+        'collegee',
+    ];
+
+    $keywords = collect($words)
+        ->filter(fn ($word) => strlen($word) >= 3)
+        ->reject(fn ($word) => in_array($word, $stopWords))
+        ->unique()
+        ->values()
+        ->all();
+
+    /*
+     * Add knowledge-base terms for common question intents.
+     */
+    $lowerQuery = strtolower($query);
+
+    if (
+        str_contains($lowerQuery, 'location') ||
+        str_contains($lowerQuery, 'address')
+    ) {
+        $keywords[] = 'location';
+        $keywords[] = 'address';
+        $keywords[] = 'patan';
     }
 
+    if (
+        str_contains($lowerQuery, 'department') ||
+        str_contains($lowerQuery, 'branch')
+    ) {
+        $keywords[] = 'department';
+        $keywords[] = 'departments';
+    }
+
+    if (
+        str_contains($lowerQuery, 'computer') &&
+        str_contains($lowerQuery, 'engineering')
+    ) {
+        $keywords[] = 'computer';
+        $keywords[] = 'engineering';
+    }
+
+    return collect($keywords)
+        ->unique()
+        ->values()
+        ->all();
+}
     /**
      * Calculate relevance score.
      */

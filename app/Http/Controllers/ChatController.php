@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ChatSession;
 use App\Models\Message;
 use App\Services\KnowledgeSearch;
-use App\Services\OllamaService;
+use App\Services\OpenRouterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -162,7 +162,7 @@ class ChatController extends Controller
     public function sendMessage(
     Request $request,
     KnowledgeSearch $knowledgeSearch,
-    OllamaService $ollamaService
+   OpenRouterService $openRouterService 
 ) {
     $request->validate([
         'message' => 'required|string|max:5000',
@@ -196,7 +196,7 @@ class ChatController extends Controller
             })
             ->implode("\n\n");
 
-        $reply = $ollamaService->generate(
+        $reply = $openRouterService->generate(
             $request->message,
             $context
         );
