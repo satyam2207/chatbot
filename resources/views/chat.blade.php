@@ -13,10 +13,13 @@
                 </div>
             </div>
 
-            <a href="{{ route('chat', ['new' => 1]) }}" class="new-chat-btn">
-    <span>＋</span>
-    New chat
-</a>
+            <form method="POST" action="{{ route('chat.new') }}">
+    @csrf
+    <button type="submit" class="new-chat-btn">
+        <span>＋</span>
+        New chat
+    </button>
+</form>
 
             <a href="{{ route('chat.analytics') }}"
    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-100 transition">
@@ -66,6 +69,17 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
 
         <button type="submit" title="{{ $chat->is_archived ? 'Restore chat' : 'Archive chat' }}">
             {{ $chat->is_archived ? '↩️' : '📦' }}
+        </button>
+    </form>
+
+    <form method="POST"
+          action="{{ route('chat.delete', $chat->id) }}"
+          onsubmit="return confirm('Delete this chat permanently?');">
+        @csrf
+        @method('DELETE')
+
+        <button type="submit" title="Delete chat">
+            🗑️
         </button>
     </form>
 
@@ -145,9 +159,9 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
             <section class="chat-content" id="chatContent">
 
 
-    @if ($messages->count() > 0)
+    <div class="messages-container" data-chat-messages>
 
-        <div class="messages-container" data-chat-messages>
+        @if ($messages->count() > 0)
 
             @foreach ($messages as $message)
 
@@ -157,15 +171,13 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
                         <div class="message-avatar">✦</div>
                     @endif
 
-                    <div class="message-bubble">
-                        {!! nl2br(e($message->message)) !!}
-                    </div>
+                    <div class="message-bubble markdown-message">
+    {{ $message->message }}
+</div>
 
                 </div>
 
             @endforeach
-
-        </div>
 
     @else
 
@@ -203,6 +215,8 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
         </div>
 
     @endif
+
+    </div>
 
 </section>
 
@@ -266,6 +280,75 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
 
     <style>
 
+
+.markdown-message p {
+    margin: 0 0 12px;
+}
+
+.markdown-message p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-message h1,
+.markdown-message h2,
+.markdown-message h3 {
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 18px 0 8px;
+}
+
+.markdown-message h1 {
+    font-size: 22px;
+}
+
+.markdown-message h2 {
+    font-size: 19px;
+}
+
+.markdown-message h3 {
+    font-size: 16px;
+}
+
+.markdown-message ul,
+.markdown-message ol {
+    margin: 8px 0 14px 22px;
+    padding-left: 18px;
+}
+
+.markdown-message li {
+    margin: 5px 0;
+}
+
+.markdown-message strong {
+    font-weight: 700;
+}
+
+.markdown-message em {
+    font-style: italic;
+}
+
+.markdown-message code {
+    padding: 2px 5px;
+    border-radius: 5px;
+    background: #f3f4f6;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.markdown-message .md-code {
+    margin: 12px 0;
+    padding: 12px;
+    overflow-x: auto;
+    border-radius: 8px;
+    background: #111827;
+    color: #f9fafb;
+}
+
+.markdown-message .md-code code {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+}
 
 
 
@@ -623,7 +706,7 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
             min-height: 0;
             overflow-y: auto;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: flex-start;
             padding: 40px 24px;
         }

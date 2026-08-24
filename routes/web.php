@@ -103,7 +103,9 @@ Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])
 
 
     Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
+    Route::post('/chat/new', [ChatController::class, 'store'])->name('chat.new');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::delete('/chat/{chatSession}', [ChatController::class, 'destroy'])->name('chat.delete');
 
     Route::get('/departments', function () {
     $departments = \App\Models\Department::where('is_active', true)

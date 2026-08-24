@@ -11,7 +11,24 @@ if (chatForm) {
     } else {
 
         const scrollToLatest = () => {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            const chatContent = document.querySelector('.chat-content');
+
+            requestAnimationFrame(() => {
+                if (chatContent) {
+                    chatContent.scrollTop = chatContent.scrollHeight;
+                }
+
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                const lastMessage = messagesContainer.lastElementChild;
+
+                if (lastMessage) {
+                    lastMessage.scrollIntoView({
+                        block: 'end',
+                        behavior: 'auto'
+                    });
+                }
+            });
         };
 
         const addMessage = (message, sender) => {
