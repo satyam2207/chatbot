@@ -11,6 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    public function index()
+{
+    $sessions = ChatSession::where('user_id', Auth::id())
+        ->withCount('messages')
+        ->with('latestMessage')
+        ->orderByDesc('is_pinned')
+        ->orderByDesc('last_message_at')
+        ->orderByDesc('updated_at')
+        ->get();
+
+    return view('chat-history', [
+        'sessions' => $sessions,
+    ]);
+}
     /**
      * Display the user's chat workspace.
      */

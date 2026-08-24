@@ -14,75 +14,126 @@
                 User Settings
             </h3>
 
-            <div class="space-y-6">
-
-                <div>
-                    <label class="block font-medium mb-2">
-                        Theme
-                    </label>
-
-                    <select class="w-full border rounded-lg px-4 py-2">
-                        <option>Light</option>
-                        <option>Dark</option>
-                        <option>System Default</option>
-                    </select>
+            @if (session('success'))
+                <div class="mb-6 rounded-lg bg-green-100 px-4 py-3 text-green-800">
+                    {{ session('success') }}
                 </div>
+            @endif
 
-                <div>
-                    <label class="block font-medium mb-2">
-                        Language
-                    </label>
+            <form method="POST" action="{{ route('settings.update') }}">
+                @csrf
+                @method('PATCH')
 
-                    <select class="w-full border rounded-lg px-4 py-2">
-                        <option>English</option>
-                        <option>Gujarati</option>
-                    </select>
-                </div>
+                <div class="space-y-6">
 
-                <div class="flex items-center justify-between border rounded-lg p-4">
-
+                    <!-- Theme -->
                     <div>
-                        <h4 class="font-semibold">
-                            Email Notifications
-                        </h4>
+                        <label class="block font-medium mb-2">
+                            Theme
+                        </label>
 
-                        <p class="text-sm text-gray-500">
-                            Receive chatbot updates
-                        </p>
+                        <select
+                            name="theme"
+                            class="w-full border rounded-lg px-4 py-2"
+                        >
+                            <option value="light"
+                                {{ $user->theme === 'light' ? 'selected' : '' }}>
+                                Light
+                            </option>
+
+                            <option value="dark"
+                                {{ $user->theme === 'dark' ? 'selected' : '' }}>
+                                Dark
+                            </option>
+
+                            <option value="system"
+                                {{ $user->theme === 'system' ? 'selected' : '' }}>
+                                System Default
+                            </option>
+                        </select>
                     </div>
 
-                    <input type="checkbox" checked>
-
-                </div>
-
-                <div class="flex items-center justify-between border rounded-lg p-4">
-
+                    <!-- Language -->
                     <div>
-                        <h4 class="font-semibold">
-                            Sound Notifications
-                        </h4>
+                        <label class="block font-medium mb-2">
+                            Language
+                        </label>
 
-                        <p class="text-sm text-gray-500">
-                            Play notification sound
-                        </p>
+                        <select
+                            name="language"
+                            class="w-full border rounded-lg px-4 py-2"
+                        >
+                            <option value="english"
+                                {{ $user->language === 'english' ? 'selected' : '' }}>
+                                English
+                            </option>
+
+                            <option value="gujarati"
+                                {{ $user->language === 'gujarati' ? 'selected' : '' }}>
+                                Gujarati
+                            </option>
+                        </select>
                     </div>
 
-                    <input type="checkbox">
+                    <!-- Email Notifications -->
+                    <div class="flex items-center justify-between border rounded-lg p-4">
+
+                        <div>
+                            <h4 class="font-semibold">
+                                Email Notifications
+                            </h4>
+
+                            <p class="text-sm text-gray-500">
+                                Receive chatbot updates
+                            </p>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            name="email_notifications"
+                            value="1"
+                            {{ $user->email_notifications ? 'checked' : '' }}
+                        >
+
+                    </div>
+
+                    <!-- Sound Notifications -->
+                    <div class="flex items-center justify-between border rounded-lg p-4">
+
+                        <div>
+                            <h4 class="font-semibold">
+                                Sound Notifications
+                            </h4>
+
+                            <p class="text-sm text-gray-500">
+                                Play notification sound
+                            </p>
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            name="sound_notifications"
+                            value="1"
+                            {{ $user->sound_notifications ? 'checked' : '' }}
+                        >
+
+                    </div>
+
+                    <!-- Save -->
+                    <div class="pt-4">
+
+                        <button
+                            type="submit"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+                        >
+                            Save Settings
+                        </button>
+
+                    </div>
 
                 </div>
 
-                <div class="pt-4">
-
-                    <button
-                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-
-                        Save Settings
-
-                    </button>
-
-                </div>
-
-            </div>
+            </form>
 
         </div>
 

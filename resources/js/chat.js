@@ -1,3 +1,24 @@
+const playNotificationSound = () => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+
+    gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + 0.25
+    );
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.25);
+};
 const chatForm = document.querySelector('[data-chat-form]');
 
 if (chatForm) {
@@ -241,6 +262,10 @@ if (chatForm) {
                 }
 
                 addMessage(data.reply, 'assistant');
+
+if (window.chatSettings?.soundNotifications) {
+    playNotificationSound();
+}
 
             } catch (error) {
                 console.error('Chat error:', error);

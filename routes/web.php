@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminNoticeController;
 use App\Http\Controllers\AdminDepartmentController;
 use App\Http\Controllers\AdminFacultyController;
+use App\Http\Controllers\SettingsController;
 
 
 Route::get('/', function () {
@@ -17,8 +18,14 @@ Route::get('/', function () {
 });
 
 Route::get('/settings', function () {
-    return view('settings');
+    return view('settings', [
+        'user' => auth()->user(),
+    ]);
 })->middleware('auth')->name('settings');
+
+Route::patch('/settings', [SettingsController::class, 'update'])
+    ->middleware('auth')
+    ->name('settings.update');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
