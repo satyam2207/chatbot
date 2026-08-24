@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ChatSession;
 use App\Models\Message;
+use App\Services\KnowledgeSearch;
+use App\Services\OllamaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -143,21 +145,55 @@ class ChatController extends Controller
      * database layer so the chat system remains functional
      * even when an AI provider is unavailable.
      */
-    public function sendMessage(Request $request)
-    {
-        $request->validate([
-            'message' => 'required|string|max:5000',
-            'chat_session_id' => 'required|exists:chat_sessions,id',
-        ]);
+    public function sendMessage(
+    Request $request,
+    KnowledgeSearch $knowledgeSearch,
+    OllamaService $ollamaService
+) {
+    $request->validate([
+        'message' => 'required|string|max:5000',
+        'chat_session_id' => 'required|exists:chat_sessions,id',
+    ]);
 
-        $session = ChatSession::where('id', $request->chat_session_id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+    $session = ChatSession::where('id', $request->chat_session_id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
 
-        $message = Message::create([
+    $userMessage = Message::create([
+        'chat_session_id' => $session->id,
+        'sender' => 'user',
+        'message' => $request->message,
+        'is_read' => true,
+    ]);
+
+    $session->update([
+        'last_message_at' => now(),
+    ]);
+
+    try {
+        $chunks = $knowledgeSearch->search(
+            $request->message,
+            5
+        );
+
+        $context = $chunks
+            ->map(function ($chunk) {
+                return $chunk->content;
+            })
+            ->implode("\n\n");
+
+        $reply = $ollamaService->generate(
+            $request->message,
+            $context
+        );
+        \Log::info('AI reply generated', [
+    'reply' => $reply,
+]);
+
+        Message::create([
             'chat_session_id' => $session->id,
-            'sender' => 'user',
-            'message' => $request->message,
+            'sender' => 'assistant',
+            'message' => $reply,
             'is_read' => true,
         ]);
 
@@ -167,14 +203,23 @@ class ChatController extends Controller
 
         return response()->json([
             'success' => true,
+            'reply' => $reply,
             'message' => [
-                'id' => $message->id,
-                'sender' => $message->sender,
-                'message' => $message->message,
-                'created_at' => $message->created_at->toISOString(),
+                'id' => $userMessage->id,
+                'sender' => 'user',
+                'message' => $userMessage->message,
+                'created_at' => $userMessage->created_at->toISOString(),
             ],
         ]);
-    }
+
+    } catch (\Throwable $e) {
+    return response()->json([
+        'success' => false,
+        'message' => $e->getMessage(),
+        'error' => get_class($e),
+    ], 500);
+}
+}
 
     /**
      * Return chat history for the authenticated user.
