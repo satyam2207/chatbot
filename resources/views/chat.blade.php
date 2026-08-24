@@ -393,6 +393,68 @@ if ($session && !$sidebarChats->contains('id', $session->id)) {
     overflow-wrap: anywhere;
 }
 
+.ai-paragraph {
+    margin: 0 0 14px;
+}
+
+.ai-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.ai-heading {
+    margin: 18px 0 8px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.ai-heading:first-child {
+    margin-top: 0;
+}
+
+.ai-list {
+    margin: 8px 0 14px;
+    padding-left: 24px;
+}
+
+.ai-list li {
+    margin: 5px 0;
+}
+
+.ai-inline-code {
+    padding: 2px 5px;
+    border-radius: 5px;
+    background: #f1f5f9;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.ai-code-block {
+    margin: 12px 0;
+    padding: 12px;
+    overflow-x: auto;
+    border-radius: 8px;
+    background: #111827;
+    color: #f9fafb;
+}
+
+.ai-table {
+    width: 100%;
+    margin: 12px 0;
+    border-collapse: collapse;
+}
+
+.ai-table th,
+.ai-table td {
+    padding: 8px 10px;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.ai-table th {
+    font-weight: 700;
+    background: #f8fafc;
+}
+
 .user-message .message-bubble {
     background: #2563eb;
     color: #ffffff;

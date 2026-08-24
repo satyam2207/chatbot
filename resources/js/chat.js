@@ -118,9 +118,13 @@ if (chatForm) {
                         const rows = block
                             .trim()
                             .split('\n')
-                            .filter(row => !/^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/.test(row));
+                            .filter(row =>
+                                !/^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/.test(row)
+                            );
 
-                        if (!rows.length) return block;
+                        if (!rows.length) {
+                            return block;
+                        }
 
                         let table = '<table class="ai-table">';
 
@@ -135,7 +139,10 @@ if (chatForm) {
                             table += '<tr>';
 
                             cells.forEach(cell => {
-                                table += '<' + tag + '>' + cell + '</' + tag + '>';
+                                table +=
+                                    '<' + tag + '>' +
+                                    cell +
+                                    '</' + tag + '>';
                             });
 
                             table += '</tr>';
@@ -147,9 +154,25 @@ if (chatForm) {
                     }
                 );
 
-                // Line breaks
-                html = html.replace(/\n{2,}/g, '<br><br>');
-                html = html.replace(/\n/g, '<br>');
+                // Paragraph and line-break formatting
+                html = html
+                    .split(/\n{2,}/)
+                    .map(block => {
+                        block = block.trim();
+
+                        if (!block) {
+                            return '';
+                        }
+
+                        if (/^<(h[2-4]|ul|ol|table|pre|div)/i.test(block)) {
+                            return block;
+                        }
+
+                        return '<p class="ai-paragraph">' +
+                            block.replace(/\n/g, '<br>') +
+                            '</p>';
+                    })
+                    .join('');
 
                 bubble.innerHTML = html;
             }
@@ -159,7 +182,6 @@ if (chatForm) {
 
             scrollToLatest();
         };
-
         const setSending = (sending) => {
             input.disabled = sending;
             sendButton.disabled = sending;
@@ -257,7 +279,154 @@ if (chatForm) {
                 input.focus();
             });
         });
+        /*
+         * Format messages loaded from the database.
+         * New messages already use addMessage(), so this only
+         * handles messages rendered by Blade on page load.
+         */
+        document
+            .querySelectorAll('.markdown-message')
+            .forEach((bubble) => {
+                const message = bubble.textContent.trim();
 
+                if (!message) {
+                    return;
+                }
+
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = '';
+
+                // Reuse the same formatting by temporarily creating
+                // the message through addMessage().
+                const originalBubble = bubble;
+
+                const escapeHtml = (value) => {
+                    const div = document.createElement('div');
+                    div.textContent = value;
+                    return div.innerHTML;
+                };
+
+                let html = escapeHtml(message);
+
+                html = html.replace(
+                    /```(?:\w+)?\n?([\s\S]*?)```/g,
+                    '<pre class="ai-code-block"><code>$1</code></pre>'
+                );
+
+                html = html.replace(
+                    /^### (.+)$/gm,
+                    '<h4 class="ai-heading">$1</h4>'
+                );
+
+                html = html.replace(
+                    /^## (.+)$/gm,
+                    '<h3 class="ai-heading">$1</h3>'
+                );
+
+                html = html.replace(
+                    /^# (.+)$/gm,
+                    '<h2 class="ai-heading">$1</h2>'
+                );
+
+                html = html.replace(
+                    /\*\*(.+?)\*\*/g,
+                    '<strong>$1</strong>'
+                );
+
+                html = html.replace(
+                    /(?<!\*)\*([^*\n]+)\*(?!\*)/g,
+                    '<em>$1</em>'
+                );
+
+                html = html.replace(
+                    /`([^`\n]+)`/g,
+                    '<code class="ai-inline-code">$1</code>'
+                );
+
+                html = html.replace(
+                    /(?:^|\n)((?:[-•] .+(?:\n|$))+)/g,
+                    function(match, list) {
+                        const items = list
+                            .trim()
+                            .split('\n')
+                            .map(function(line) {
+                                return '<li>' +
+                                    line.replace(/^[-•] /, '') +
+                                    '</li>';
+                            })
+                            .join('');
+
+                        return '<ul class="ai-list">' + items + '</ul>';
+                    }
+                );
+
+                html = html.replace(
+                    /((?:^\|.*\|$\n?)+)/gm,
+                    function(block) {
+                        const rows = block
+                            .trim()
+                            .split('\n')
+                            .filter(row =>
+                                !/^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/.test(row)
+                            );
+
+                        if (!rows.length) {
+                            return block;
+                        }
+
+                        let table = '<table class="ai-table">';
+
+                        rows.forEach((row, index) => {
+                            const cells = row
+                                .replace(/^\||\|$/g, '')
+                                .split('|')
+                                .map(cell => cell.trim());
+
+                            const tag = index === 0 ? 'th' : 'td';
+
+                            table += '<tr>';
+
+                            cells.forEach(cell => {
+                                table +=
+                                    '<' + tag + '>' +
+                                    cell +
+                                    '</' + tag + '>';
+                            });
+
+                            table += '</tr>';
+                        });
+
+                        table += '</table>';
+
+                        return table;
+                    }
+                );
+
+                html = html
+                    .split(/\n{2,}/)
+                    .map(block => {
+                        block = block.trim();
+
+                        if (!block) {
+                            return '';
+                        }
+
+                        if (/^<(h[2-4]|ul|ol|table|pre|div)/i.test(block)) {
+                            return block;
+                        }
+
+                        return '<p class="ai-paragraph">' +
+                            block.replace(/\n/g, '<br>') +
+                            '</p>';
+                    })
+                    .join('');
+
+                originalBubble.innerHTML = html;
+            });
+
+        scrollToLatest();
+
+        console.log('CHAT JS LOADED');
         scrollToLatest();
 
         console.log('CHAT JS LOADED');
